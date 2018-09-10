@@ -61,17 +61,17 @@ const NewHasil = Loadable({
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
- // { path: '/', name: 'Home', component: DefaultLayout },
+//{ path: '/', name: 'Home', component: DefaultLayout },
   { path: '/dashboard', exact: true, name: 'Dashboard', component: Dashboard },
-  { path: '/dashboard/users/list-user', name: 'Users', component: Users },
-  { path: '/dashboard/presiden/list-presiden', name: 'List Presiden', component: ListPresiden },
-  { path: '/dashboard/presiden/newpres', name: 'New Pres', component: NewPres },
-  { path: '/dashboard/presiden/newput', name: 'New Put', component: NewPut },
-  { path: '/dashboard/presiden/newpar', name: 'New Par', component: NewPar },
-  { path: '/dashboard/presiden/list-parpol', name: 'List Parpol', component: ListParpol },
-  { path: '/dashboard/hasil/hasil', name: 'Hasil', component: Hasil },
-  { path: '/dashboard/hasil/sengketa', name: 'Sengketa', component: Sengketa },
-  { path: '/dashboard/hasil/newhasil', name: 'New Hasil', component: NewHasil },
+  { path: '/users/list-user', name: 'Users', component: Users },
+  { path: '/presiden/list-presiden', name: 'List Presiden', component: ListPresiden },
+  { path: '/presiden/newpres', name: 'New Pres', component: NewPres },
+  { path: '/presiden/newput', name: 'New Put', component: NewPut },
+  { path: '/presiden/newpar', name: 'New Par', component: NewPar },
+  { path: '/presiden/list-parpol', name: 'List Parpol', component: ListParpol },
+  { path: '/hasil/hasil', name: 'Hasil', component: Hasil },
+  { path: '/hasil/sengketa', name: 'Sengketa', component: Sengketa },
+  { path: '/hasil/newhasil', name: 'New Hasil', component: NewHasil },
 ]; 
 
 export default routes;

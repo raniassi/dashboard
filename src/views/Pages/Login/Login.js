@@ -20,7 +20,8 @@ class Login extends Component {
     super(props);
     this.state = {
       username: "",
-      password: ""
+      password: "",
+      statusLogin: ""
     };
     this.onHandleChange = this.onHandleChange.bind(this);
     this.onHandleSubmitLogin = this.onHandleSubmitLogin.bind(this);
@@ -47,8 +48,7 @@ class Login extends Component {
 
   render() {
     const { username, password } = this.state;
-    const isEnabled =
-      username.length > 0 && password.length > 0;
+    const isEnabled = username.length > 0 && password.length > 0;
     console.log(isEnabled);
     return (
       <div className="app flex-row align-items-center">
@@ -60,6 +60,12 @@ class Login extends Component {
                   <CardBody>
                     <h1>Login</h1>
                     <p className="text-muted">Sign In to your account</p>
+                    <div
+                      className="text-center"
+                      style={{ color: "red", paddingBottom: "10px" }}
+                    >
+                      {this.state.statusLogin}
+                    </div>
                     <InputGroup className="mb-3">
                       <InputGroupAddon addonType="prepend">
                         <InputGroupText>
@@ -100,7 +106,6 @@ class Login extends Component {
                           Login
                         </Button>
                       </Col>
-                      
                     </Row>
                   </CardBody>
                 </Card>
@@ -112,11 +117,11 @@ class Login extends Component {
                     <div>
                       <h2>Selamat Datang di Laman Admin!</h2>
                       <img
-                          className="img-fluid"
-                          src="KPU.png"
-                          alt=""
-                          style={{width:'200px', paddingTop:'20px'}}
-                        />
+                        className="img-fluid"
+                        src="KPU.png"
+                        alt=""
+                        style={{ width: "200px", paddingTop: "20px" }}
+                      />
                     </div>
                   </CardBody>
                 </Card>

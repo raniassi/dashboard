@@ -6,17 +6,17 @@ export const tokenAuth = {
     Cookies.set("data", data);
   },
 
-  setDeleted(token) {
-    Cookies.set("isDeleted", token);
+  setVoted(token) {
+    Cookies.set("isVoted", token);
   },
 
   tokenAuthenticated() {
     const authToken = Cookies.get("auth");
     const dataToken = Cookies.get("data");
-    console.log(dataToken)
     if (authToken) {
       return {
         authToken: true,
+        authData: authToken,
         dataToken: JSON.parse(dataToken)
       };
     }
@@ -26,8 +26,8 @@ export const tokenAuth = {
     };
   },
 
-  checkIsDeleted (){
-    return Cookies.get("isDeleted");
+  checkIsVoted() {
+    return Cookies.get("isVoted");
   },
   eraseCookies() {
     Cookies.remove("auth");
