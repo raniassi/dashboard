@@ -12,9 +12,13 @@ export const  BASE_URL_PHOTO = 'http://127.0.0.1:3001/assets-img/';
  * @param fetchApi get from server *
  */
 
-const fetchApi = async (endpoint = '') => {
+const fetchApi = async (endpoint = '', params) => {
   const fullUrl = (endpoint.indexOf(API_ROOT) === -1) ? API_ROOT + endpoint : endpoint;
-  const result = await instanceAxios.get(fullUrl).catch((error) => {
+  const result = await instanceAxios.get(fullUrl,{
+    params: {
+      params
+    }
+  }).catch((error) => {
     if (error.response) {
       return { status: error.response.status };
     }

@@ -47,6 +47,28 @@ class NewPres extends Component {
     this.handleUpload = this.handleUpload.bind(this);
   }
 
+  async handlFetch(){
+      // console.log(this.props.location.state.idPresiden)
+    if (this.props.location.state){
+      const userData = await fetchApi("/get-presiden",this.props.location.state.idPresiden);
+
+      /**
+       * TODO
+       * userData lau set ke state di line 33 
+       * lau pecah ke masing2 misal userData.nama_wakil see dibawah ini,, lanjutin 
+       * and lau tempel di input2
+       * see line 226
+       */
+      
+      this.setState({nama_wakil: userData.data.nama_wakil})
+
+    
+    }
+  
+  }
+
+
+
   onHandleChange(e) {
     this.setState({
       [e.target.id]: e.target.value
@@ -96,6 +118,7 @@ class NewPres extends Component {
 
   async componentDidMount() {
     const userData = await fetchApi("/get-all-parpol");
+    this.handlFetch();
     //console.log(userData);
     // res.json(userData);
     this.setState({ dataParpol: userData.data });
@@ -139,8 +162,13 @@ class NewPres extends Component {
     }
   };
 
+  componentWillReceiveProps(nextProps){
+    
+  }
+
   render() {
     const { photos } = this.state;
+    console.log(this.props)
     return (
       <div>
         <Alert
@@ -196,6 +224,7 @@ class NewPres extends Component {
               <Input
                 name="nama_wakil"
                 id="nama_wakil"
+                value={this.state.nama_wakil}
                 onChange={e => this.onHandleChangePost(e)}
                 placeholder="Masukkan Nama Calon Wakil Presiden"
               />

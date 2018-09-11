@@ -13,8 +13,7 @@ import {
   CardHeader,
   CardBody
 } from "reactstrap";
-import { fetchApi } from "../../middleware/api.js";
-import { postApi } from "../../middleware/api.js";
+import { postApi, fetchApi } from "../../middleware/api.js";
 import { Redirect } from "react-router-dom";
 // import { Alerts, Badges, Modals } from './Notifications';
 import { Alert, Modal, ModalBody, ModalFooter, ModalHeader,} from 'reactstrap';
@@ -35,6 +34,7 @@ class Example extends Component {
     this.onHandleDelete = this.onHandleDelete.bind(this);
     this.toggleAlert = this.toggleAlert.bind(this);
     this.handlFetch = this.handlFetch.bind(this);
+    this.onHanldeUpdate = this.onHanldeUpdate.bind(this);
   }
 
   async handlFetch(){
@@ -81,6 +81,12 @@ class Example extends Component {
 
 
   }
+
+  async onHanldeUpdate(idPresiden) {
+
+
+    this.props.history.push({pathname: '/presiden/newpres', state: {idPresiden}})
+   }
 
   toggleAlert() {
     this.setState({
@@ -143,6 +149,7 @@ class Example extends Component {
                                   color="primary"
                                   className="icon-pencil"
                                   size="sm"
+                                  onClick={()=>this.onHanldeUpdate(item._id)}
                                   style={{ marginRight: "10px" }}
                                 />
                                 <Button
