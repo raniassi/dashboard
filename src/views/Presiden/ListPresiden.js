@@ -16,7 +16,8 @@ import {
 import { fetchApi } from "../../middleware/api.js";
 import { postApi } from "../../middleware/api.js";
 import { Redirect } from "react-router-dom";
-
+// import { Alerts, Badges, Modals } from './Notifications';
+import { Alert, Modal, ModalBody, ModalFooter, ModalHeader,} from 'reactstrap';
 class Example extends Component {
   constructor(props) {
     super(props);
@@ -28,16 +29,23 @@ class Example extends Component {
       img: "",
       final: "",
       vote: "",
-      dataPresiden: []
+      dataPresiden: [],
+      alertVisible:false,
     };
     this.onHandleDelete = this.onHandleDelete.bind(this);
+    this.toggleAlert = this.toggleAlert.bind(this);
+    this.handlFetch = this.handlFetch.bind(this);
   }
 
-  async componentDidMount() {
+  async handlFetch(){
     const userData = await fetchApi("/get-all-presiden");
     //console.log(userData);
     // res.json(userData);
     this.setState({ dataPresiden: userData.data });
+  }
+
+  async componentDidMount() {
+    this.handlFetch();
   }
 
   //Halaman Tambah List Pasangan Calon
@@ -55,36 +63,31 @@ class Example extends Component {
     }
   };
 
-  async onHandleDelete(itemToBeDeleted) {
-    const {
-      no_urut,
-      vote,
-      nama_presiden,
-      nama_wakil,
-      id_parpol,
-      img, 
-      final
-    } = this.state;
-    
-      try { 
-        var { status } = await postApi("/delete-presiden", this.state);
-        this.setState({ showAlert: false });
-        //console.log(status);
-      } catch (e) {
-        this.setState({ showAlert: true });
-        //console.log(e);
+  async onHandleDelete(idPresiden) {
+   this.toggleAlert()
+    console.log(idPresiden)
+
+      
+      var { status } = await postApi("/delete-presiden", {id: idPresiden});   
+
+      console.log(status);
+
+      if (status === 200){
+        this.handlFetch();
+      }else{
+        console.error("status", status);
       }
-      if (status === 200) {
-        this.setState({
-          visible: true
-        });
-      }
-      var newItems = this.state.dataPresiden.filter(item => {
-      return item != itemToBeDeleted;
-    });
-    this.setState({ dataPresiden: newItems });
-    // console.log(id_parpol);
+
+
+
   }
+
+  toggleAlert() {
+    this.setState({
+      alertVisible: !this.state.alertVisible,
+    });
+  }
+
 
   render() {
     // const userList = this.state.dataUser.filter((user) => user.id < 10)
@@ -95,6 +98,8 @@ class Example extends Component {
 
     return (
       <div>
+                     
+
         <Row>
           <Col>
             {this.renderRedirect()}
@@ -114,7 +119,7 @@ class Example extends Component {
                   <CardBody>
                     <Table
                       striped
-                      onHandleDelete={this.onHandleDelete.bind(this)}
+                     
                     >
                       <thead>
                         <tr>
@@ -141,15 +146,28 @@ class Example extends Component {
                                   style={{ marginRight: "10px" }}
                                 />
                                 <Button
-                                  onClick={this.onHandleDelete.bind(this)}
+                                  onClick={this.toggleAlert}
                                   color="danger"
                                   className="icon-trash"
                                   size="sm"
                                 />
                               </td>
                             }
+                             <Modal isOpen={this.state.alertVisible} toggle={this.toggleAlert}
+                                  className={'modal-sm ' + this.props.className}>
+                              <ModalHeader toggle={this.toggleSmall}>Peringatan</ModalHeader>
+                              <ModalBody>
+                              Anda yakin ingin menghapus kandidat tersebut ?
+                              </ModalBody>
+                              <ModalFooter>
+                                <Button color="primary" onClick={() => this.onHandleDelete(item._id)}>Ya</Button>{' '}
+                                <Button color="secondary" onClick={this.toggleAlert}>Tidak</Button>
+                              </ModalFooter>
+                            </Modal>
                           </tr>
+                          
                         ))}
+                   
                       </tbody>
                     </Table>
                   </CardBody>
