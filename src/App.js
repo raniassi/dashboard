@@ -69,6 +69,16 @@ const NewHasil = Loadable({
   loading: Loading,
 });
 
+const UpdatePres = Loadable({
+  loader: () => import('./views/Presiden/UpdatePres'),
+  loading: Loading,
+});
+
+const UpdatePar = Loadable({
+  loader: () => import('./views/Presiden/UpdatePar'),
+  loading: Loading,
+});
+
 class App extends Component {
   render() {
     return (
@@ -80,7 +90,8 @@ class App extends Component {
           <PrivateRoute path="/users/list-user" name="Users" component={Users && DefaultLayout} roles={["admin", "user"]} />
           <PrivateRoute path="/presiden/list-presiden" name="Users" component={ListPresiden && DefaultLayout} roles={["admin", "user"]} />
           <PrivateRoute path= '/presiden/newpres' name= 'New Pres' component= {NewPres && DefaultLayout} roles={["admin", "user"]} />
-          <PrivateRoute path= '/presiden/newput' name= 'New Put' component= {NewPut && DefaultLayout} roles={["admin", "user"]}/>
+          <PrivateRoute path= '/presiden/updatepres' name= 'Update Pres' component= {UpdatePres && DefaultLayout} roles={["admin", "user"]}/>
+          <PrivateRoute path= '/presiden/updatepar' name= 'Update Par' component= {UpdatePar && DefaultLayout} roles={["admin", "user"]}/>
           <PrivateRoute path= '/presiden/newpar' name= 'New Par' component= {NewPar && DefaultLayout} roles={["admin", "user"]}/>
           <PrivateRoute path= '/presiden/list-parpol' name= 'List Parpol' component= {ListParpol && DefaultLayout} roles={["admin", "user"]}/>
           <PrivateRoute path= '/hasil/hasil' name= 'Hasil' component= {Hasil && DefaultLayout} roles={["admin", "user"]}/>

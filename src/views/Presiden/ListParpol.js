@@ -11,10 +11,11 @@ import {
   Row,
   Card,
   CardHeader,
-  CardBody 
+  CardBody
 } from "reactstrap";
-import { fetchApi } from "../../middleware/api.js";
+import { fetchApi, postApi } from "../../middleware/api.js";
 import { Redirect } from "react-router-dom";
+import { Alert, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 
 function UserRow(props) {
   const user = props.user;
@@ -42,10 +43,55 @@ class Example extends Component {
     super(props);
     this.state = {
       dataParpol: [],
-      waiting: false
+      nama_parpol:"",
+      waiting: false,
+      alertVisible: false
     };
+    this.onHandleDelete = this.onHandleDelete.bind(this);
+    this.toggleAlert = this.toggleAlert.bind(this);
+    this.handlFetch = this.handlFetch.bind(this);
     this.onConfirm = this.onConfirm.bind(this);
     this.onQuery = this.onQuery.bind(this);
+    this.onHanldeUpdate = this.onHanldeUpdate.bind(this);
+  }
+
+  async onHanldeUpdate(idPresiden) {
+    this.props.history.push({
+      pathname: "/presiden/updatepar",
+      state: { idPresiden }
+    });
+  }
+
+  async handlFetch() {
+    const userData = await fetchApi("/get-all-parpol");
+    //console.log(userData);
+    // res.json(userData);
+    this.setState({ dataParpol: userData.data });
+  }
+
+  async componentDidMount() {
+    this.handlFetch();
+  }
+
+  toggleAlert() {
+    this.setState({
+      alertVisible: !this.state.alertVisible
+    });
+  }
+
+  async onHandleDelete(idParpol) {
+    this.toggleAlert();
+    console.log(idParpol);
+
+    var { status } = await postApi("/delete-parpol", { id: idParpol });
+
+    console.log(status);
+
+    if (status === 200) {
+      this.handlFetch();
+    } else {
+      console.error("status", status);
+    }
   }
 
   onConfirm(e) {
@@ -63,12 +109,12 @@ class Example extends Component {
     }, 1000);
   }
 
-  async componentDidMount() {
-    const userData = await fetchApi("/get-all-parpol");
-   // console.log(userData);
-    // res.json(userData);
-    this.setState({ dataParpol: userData.data });
-  }
+  // async componentDidMount() {
+  //   const userData = await fetchApi("/get-all-parpol");
+  //   // console.log(userData);
+  //   // res.json(userData);
+  //   this.setState({ dataParpol: userData.data });
+  // }
 
   state = {
     redirect: false
@@ -119,14 +165,55 @@ class Example extends Component {
                         </tr>
                       </thead>
                       <tbody>
-                        {this.state.dataParpol.map((user, index) => {
-                          {
-                            // console.log(index);
-                          }
-                          return (
-                            <UserRow key={index} index={index} user={user} />
-                          );
-                        })}
+                      {this.state.dataParpol.map((item, i) => (
+                          <tr>
+                            {<td>{i + 1}</td>}
+                            {<td>{item.nama_parpol}</td>}
+                            {
+                              <td scope="row">
+                                <Button
+                                  color="primary"
+                                  className="icon-pencil"
+                                  size="sm"
+                                  onClick={() => this.onHanldeUpdate(item._id)}
+                                  style={{ marginRight: "10px" }}
+                                />
+                                <Button
+                                  onClick={this.toggleAlert}
+                                  color="danger"
+                                  className="icon-trash"
+                                  size="sm"
+                                />
+                              </td>
+                            }
+                            <Modal
+                              isOpen={this.state.alertVisible}
+                              toggle={this.toggleAlert}
+                              className={"modal-sm " + this.props.className}
+                            >
+                              <ModalHeader toggle={this.toggleSmall}>
+                                Peringatan
+                              </ModalHeader>
+                              <ModalBody>
+                                Anda yakin ingin menghapus kandidat tersebut ?
+                              </ModalBody>
+                              <ModalFooter>
+                                <Button
+                                  color="primary"
+                                  onClick={() => this.onHandleDelete(item._id)}
+                                >
+                                  Ya
+                                </Button>{" "}
+                                <Button
+                                  color="secondary"
+                                  onClick={this.toggleAlert}
+                                >
+                                  Tidak
+                                </Button>
+                              </ModalFooter>
+                            </Modal>
+                          </tr>
+                        ))}
                       </tbody>
                     </Table>
                   </CardBody>

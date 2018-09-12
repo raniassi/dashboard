@@ -16,7 +16,7 @@ import {
 import { postApi, fetchApi } from "../../middleware/api.js";
 import { Redirect } from "react-router-dom";
 // import { Alerts, Badges, Modals } from './Notifications';
-import { Alert, Modal, ModalBody, ModalFooter, ModalHeader,} from 'reactstrap';
+import { Alert, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 class Example extends Component {
   constructor(props) {
     super(props);
@@ -29,7 +29,7 @@ class Example extends Component {
       final: "",
       vote: "",
       dataPresiden: [],
-      alertVisible:false,
+      alertVisible: false
     };
     this.onHandleDelete = this.onHandleDelete.bind(this);
     this.toggleAlert = this.toggleAlert.bind(this);
@@ -37,7 +37,7 @@ class Example extends Component {
     this.onHanldeUpdate = this.onHanldeUpdate.bind(this);
   }
 
-  async handlFetch(){
+  async handlFetch() {
     const userData = await fetchApi("/get-all-presiden");
     //console.log(userData);
     // res.json(userData);
@@ -64,36 +64,32 @@ class Example extends Component {
   };
 
   async onHandleDelete(idPresiden) {
-   this.toggleAlert()
-    console.log(idPresiden)
+    this.toggleAlert();
+    console.log(idPresiden);
 
-      
-      var { status } = await postApi("/delete-presiden", {id: idPresiden});   
+    var { status } = await postApi("/delete-presiden", { id: idPresiden });
 
-      console.log(status);
+    console.log(status);
 
-      if (status === 200){
-        this.handlFetch();
-      }else{
-        console.error("status", status);
-      }
-
-
-
+    if (status === 200) {
+      this.handlFetch();
+    } else {
+      console.error("status", status);
+    }
   }
 
   async onHanldeUpdate(idPresiden) {
-
-
-    this.props.history.push({pathname: '/presiden/newpres', state: {idPresiden}})
-   }
-
-  toggleAlert() {
-    this.setState({
-      alertVisible: !this.state.alertVisible,
+    this.props.history.push({
+      pathname: "/presiden/updatepres",
+      state: { idPresiden }
     });
   }
 
+  toggleAlert() {
+    this.setState({
+      alertVisible: !this.state.alertVisible
+    });
+  }
 
   render() {
     // const userList = this.state.dataUser.filter((user) => user.id < 10)
@@ -104,8 +100,6 @@ class Example extends Component {
 
     return (
       <div>
-                     
-
         <Row>
           <Col>
             {this.renderRedirect()}
@@ -123,10 +117,7 @@ class Example extends Component {
                     <i className="fa fa-align-justify" /> List Pasangan Calon
                   </CardHeader>
                   <CardBody>
-                    <Table
-                      striped
-                     
-                    >
+                    <Table striped>
                       <thead>
                         <tr>
                           <th scope="col">No. Urut</th>
@@ -149,7 +140,7 @@ class Example extends Component {
                                   color="primary"
                                   className="icon-pencil"
                                   size="sm"
-                                  onClick={()=>this.onHanldeUpdate(item._id)}
+                                  onClick={() => this.onHanldeUpdate(item._id)}
                                   style={{ marginRight: "10px" }}
                                 />
                                 <Button
@@ -160,21 +151,34 @@ class Example extends Component {
                                 />
                               </td>
                             }
-                             <Modal isOpen={this.state.alertVisible} toggle={this.toggleAlert}
-                                  className={'modal-sm ' + this.props.className}>
-                              <ModalHeader toggle={this.toggleSmall}>Peringatan</ModalHeader>
+                            <Modal
+                              isOpen={this.state.alertVisible}
+                              toggle={this.toggleAlert}
+                              className={"modal-sm " + this.props.className}
+                            >
+                              <ModalHeader toggle={this.toggleSmall}>
+                                Peringatan
+                              </ModalHeader>
                               <ModalBody>
-                              Anda yakin ingin menghapus kandidat tersebut ?
+                                Anda yakin ingin menghapus kandidat tersebut ?
                               </ModalBody>
                               <ModalFooter>
-                                <Button color="primary" onClick={() => this.onHandleDelete(item._id)}>Ya</Button>{' '}
-                                <Button color="secondary" onClick={this.toggleAlert}>Tidak</Button>
+                                <Button
+                                  color="primary"
+                                  onClick={() => this.onHandleDelete(item._id)}
+                                >
+                                  Ya
+                                </Button>{" "}
+                                <Button
+                                  color="secondary"
+                                  onClick={this.toggleAlert}
+                                >
+                                  Tidak
+                                </Button>
                               </ModalFooter>
                             </Modal>
                           </tr>
-                          
                         ))}
-                   
                       </tbody>
                     </Table>
                   </CardBody>

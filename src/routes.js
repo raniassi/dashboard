@@ -23,13 +23,18 @@ const NewPres = Loadable({
   loading: Loading,
 });
 
-const NewPar = Loadable({
-  loader: () => import('./views/Presiden/NewPar'),
+const UpdatePres = Loadable({
+  loader: () => import('./views/Presiden/UpdatePres'),
   loading: Loading,
 });
 
-const NewPut = Loadable({
-  loader: () => import('./views/Presiden/NewPut'),
+const UpdatePar = Loadable({
+  loader: () => import('./views/Presiden/UpdatePar'),
+  loading: Loading,
+});
+
+const NewPar = Loadable({
+  loader: () => import('./views/Presiden/NewPar'),
   loading: Loading,
 });
 
@@ -66,7 +71,8 @@ const routes = [
   { path: '/users/list-user', name: 'Users', component: Users },
   { path: '/presiden/list-presiden', name: 'List Presiden', component: ListPresiden },
   { path: '/presiden/newpres', name: 'New Pres', component: NewPres },
-  { path: '/presiden/newput', name: 'New Put', component: NewPut },
+  { path: '/presiden/updatepres', name: 'Update Pres', component: UpdatePres },
+  { path: '/presiden/updatepar', name: 'Update Par', component: UpdatePar },
   { path: '/presiden/newpar', name: 'New Par', component: NewPar },
   { path: '/presiden/list-parpol', name: 'List Parpol', component: ListParpol },
   { path: '/hasil/hasil', name: 'Hasil', component: Hasil },

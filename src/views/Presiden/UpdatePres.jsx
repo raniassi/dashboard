@@ -27,11 +27,12 @@ function UserRow(props) {
   return <option value={user._id}>{user.nama_parpol}</option>;
 }
 
-class NewPres extends Component {
+class UpdatePres extends Component {
   constructor(props) {
     super(props);
     this.state = {
       modal: false,
+      id_presiden:'',
       no_urut: "",
       nama_presiden: "",
       nama_wakil: "",
@@ -51,10 +52,12 @@ class NewPres extends Component {
   async handlFetch() {
     // console.log(this.props.location.state.idPresiden)
     if (this.props.location.state) {
+      this.setState({id_presiden:  this.props.location.state.idPresiden})
       const userData = await fetchApi(
-        "/get-all-presiden",
-        this.props.location.state.id_presiden
+        "/get-presiden",
+        this.props.location.state.idPresiden
       );
+      console.log(userData)
 
       /**
        * TODO
@@ -63,9 +66,14 @@ class NewPres extends Component {
        * and lau tempel di input2
        * see line 226
        */
-      this.setState({ no_urut: userData.data.no_urut });
-      this.setState({ nama_presiden: userData.data.nama_presiden });
-      this.setState({ nama_wakil: userData.data.nama_wakil });
+      this.setState({
+        no_urut: userData.data.no_urut,
+        nama_presiden: userData.data.nama_presiden,
+        nama_wakil: userData.data.nama_wakil,
+        final: userData.data.final,
+        id_parpol: userData.data.id_parpol
+      });
+      
     }
   }
 
@@ -124,10 +132,10 @@ class NewPres extends Component {
 
   async onHandleSubmit() {
     const { no_urut, nama_presiden, nama_wakil, id_parpol, img } = this.state;
-    //console.log(id_parpol);
+    console.log(this.state);
 
     try {
-      var { status } = await postApi("/add-presiden", this.state);
+      var { status } = await postApi("/update-presiden", this.state);
       this.setState({ showAlert: false });
       //console.log(status);
     } catch (e) {
@@ -173,7 +181,7 @@ class NewPres extends Component {
           toggle={this.onDismiss}
           fade={false}
         >
-          List Parpol baru telah berhasil ditambahkan.
+          List Parpol baru telah berhasil diupdate.
         </Alert>
         <h3
           style={{
@@ -183,7 +191,7 @@ class NewPres extends Component {
             color: "#404040"
           }}
         >
-          Tambah Pasangan Calon
+          Update Pasangan Calon
         </h3>
         <Form>
           <FormGroup style={{ paddingTop: "30px" }} row>
@@ -236,6 +244,7 @@ class NewPres extends Component {
               <Input
                 type="select"
                 name="id_parpol"
+                value={this.state.id_parpol}
                 onChange={e => this.onHandleChangePost(e)}
                 id="id_parpol"
               >
@@ -254,11 +263,12 @@ class NewPres extends Component {
               Gambar
             </Label>
             <Col sm={10}>
-              <input
+              <Input
                 accept="image/*"
                 id="raised-button-file"
                 type="file"
                 name="photos"
+                value={this.state.img}
                 onChange={this.handleUpload}
               />
 
@@ -292,4 +302,4 @@ class NewPres extends Component {
   }
 }
 
-export default NewPres;
+export default UpdatePres;

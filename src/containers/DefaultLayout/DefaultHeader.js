@@ -21,7 +21,8 @@ class DefaultHeader extends Component {
   }
   handleLogout() {
     tokenAuth.eraseCookies();
-    this.props.history.push("/login");
+    this.props.history.push('/login');
+    console.log("logout")
   }
   render() {
 
@@ -45,7 +46,7 @@ class DefaultHeader extends Component {
               <img src={'assets/img/avatars/6.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com" />
             </DropdownToggle>
             <DropdownMenu right style={{ right: 'auto' }}>
-              <DropdownItem><i className="fa fa-lock" onClick={this.handleLogout}></i> Logout</DropdownItem>
+              <DropdownItem onClick={this.handleLogout}><i className="fa fa-lock" ></i> Logout</DropdownItem>
             </DropdownMenu>
           </AppHeaderDropdown>
         </Nav>

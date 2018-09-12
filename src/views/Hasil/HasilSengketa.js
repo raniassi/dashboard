@@ -13,23 +13,59 @@ import {
   CardHeader,
   CardBody
 } from "reactstrap";
-import { fetchApi } from "../../middleware/api.js";
+import { fetchApi, postApi } from "../../middleware/api.js";
 import { Redirect } from "react-router-dom";
 
 class Example extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dataPresiden: []
+      dataPresiden: [],
+      alertVisible: false
     };
+    this.onHandleDelete = this.onHandleDelete.bind(this);
+    this.toggleAlert = this.toggleAlert.bind(this);
+    this.handlFetch = this.handlFetch.bind(this);
   }
 
-  async componentDidMount() {
+  async handlFetch() {
     const userData = await fetchApi("/get-all-presiden");
     //console.log(userData);
     // res.json(userData);
     this.setState({ dataPresiden: userData.data });
   }
+
+  async componentDidMount() {
+    this.handlFetch();
+  }
+
+  async onHandleDelete(idPresiden) {
+    this.toggleAlert();
+    console.log(idPresiden);
+
+    var { status } = await postApi("/delete-presiden", { id: idPresiden });
+
+    console.log(status);
+
+    if (status === 200) {
+      this.handlFetch();
+    } else {
+      console.error("status", status);
+    }
+  }
+
+  toggleAlert() {
+    this.setState({
+      alertVisible: !this.state.alertVisible
+    });
+  }
+
+  // async componentDidMount() {
+  //   const userData = await fetchApi("/get-all-presiden");
+  //   //console.log(userData);
+  //   // res.json(userData);
+  //   this.setState({ dataPresiden: userData.data });
+  // }
 
   //Halaman Tambah List Pasangan Calon
   state = {
