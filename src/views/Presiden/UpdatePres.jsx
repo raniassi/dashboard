@@ -17,7 +17,7 @@ import {
 import { Redirect } from "react-router-dom";
 import { postApi } from "../../middleware/api";
 import { fetchApi } from "../../middleware/api.js";
-
+import * as qs from 'query-string';
 const axios = require("axios");
 const API_ROOT = "http://127.0.0.1:3001/api";
 
@@ -50,14 +50,19 @@ class UpdatePres extends Component {
   }
 
   async handlFetch() {
-    // console.log(this.props.location.state.idPresiden)
-    if (this.props.location.state) {
-      this.setState({id_presiden:  this.props.location.state.idPresiden})
+    console.log(this.props)
+    const {idpres} = qs.parse(this.props.location.search);
+    console.log(idpres)
+    if (idpres) {
+      this.setState({id_presiden:  idpres})
       const userData = await fetchApi(
         "/get-presiden",
-        this.props.location.state.idPresiden
+        idpres
       );
-      console.log(userData)
+
+      
+
+      console.log(userData.data.img)
 
       /**
        * TODO
@@ -71,7 +76,8 @@ class UpdatePres extends Component {
         nama_presiden: userData.data.nama_presiden,
         nama_wakil: userData.data.nama_wakil,
         final: userData.data.final,
-        id_parpol: userData.data.id_parpol
+        id_parpol: userData.data.id_parpol,
+        img: userData.data.img
       });
       
     }
@@ -89,7 +95,7 @@ class UpdatePres extends Component {
     console.log(event.target.files[0]);
     const filePhoto = event.target.files[0];
     if (filePhoto) {
-      this.setState({ img: filePhoto.name });
+      
       // this.setState({ isUploading: true });
       console.log(filePhoto);
       formData.append("photos", filePhoto);
@@ -104,6 +110,15 @@ class UpdatePres extends Component {
       });
 
       console.log(result);
+      console.log(result);
+      if (result.status === 200){
+        setTimeout(() => {
+          this.setState({ img: filePhoto.name });
+        }, 500)
+        
+
+      }
+      
 
       // /**
       //  * Get Fullsize photo
@@ -263,18 +278,20 @@ class UpdatePres extends Component {
               Gambar
             </Label>
             <Col sm={10}>
-              <Input
+            {/* <p>{this.state.img}</p> */}
+              <input
                 accept="image/*"
                 id="raised-button-file"
                 type="file"
-                name="photos"
-                value={this.state.img}
+                name="photos"                
                 onChange={this.handleUpload}
               />
 
               <FormText color="muted">
                 Pilih gambar profil dari pasangan calon.
               </FormText>
+
+              <img src={this.state.img.includes('assets-img') ? `http://localhost:3001/${this.state.img}` : `http://localhost:3001/assets-img/${this.state.img}`}  height={200} width={300} />
             </Col>
           </FormGroup>
           <FormGroup check row>

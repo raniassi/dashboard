@@ -79,9 +79,10 @@ class Example extends Component {
   }
 
   async onHanldeUpdate(idPresiden) {
+    console.log(this.props)
     this.props.history.push({
       pathname: "/presiden/updatepres",
-      state: { idPresiden }
+      search: `?idpres=${idPresiden}` 
     });
   }
 
